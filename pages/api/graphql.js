@@ -8,11 +8,13 @@ import {
   Collection,
   Lambda,
   Get,
+  Create,
 } from "faunadb";
 
 const client = new Client({
   secret: process.env.FAUNA_SECRET,
   domain: "db.fauna.com",
+  scheme: "https",
 });
 
 export const config = {
@@ -33,28 +35,45 @@ const books = [
 ];
 
 const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
+  type Player {
+    name: String
+    surname: String
   }
 
   type Query {
-    books: [Book]
+    players: [Player]
+  }
+
+  type Mutation {
+    createPlayer(name: String!, surname: String!): Player
   }
 `;
 
-const resolvers = {
+export const resolvers = {
   Query: {
-    books: async () => {
+    players: async () => {
       const response = await client.query(
         Map(
           Paginate(Documents(Collection("Jugadores"))),
           Lambda((x) => Get(x))
         )
       );
-      console.log("TEST", response);
-      const players = response.data.map((item) => item.data);
+      const players = response.data.map((player) => player.data);
       return [...players];
+    },
+  },
+
+  Mutation: {
+    createPlayer: async ({ name, surname }) => {
+      const response = await client.query(
+        Create(Collection("Jugadores"), {
+          data: {
+            name,
+            surname,
+          },
+        })
+      );
+      return response.data;
     },
   },
 };
