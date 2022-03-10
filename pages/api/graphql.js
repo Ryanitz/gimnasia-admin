@@ -14,7 +14,6 @@ import {
 const client = new Client({
   secret: process.env.FAUNA_SECRET,
   domain: "db.fauna.com",
-  scheme: "https",
 });
 
 export const config = {
