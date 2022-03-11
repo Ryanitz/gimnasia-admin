@@ -34,7 +34,7 @@ export default function Home({ players }) {
 }
 
 export async function getServerSideProps() {
-  const players = await resolvers.Query.players();
+  const players = []; // await resolvers.Query.players();
 
   return {
     props: {
