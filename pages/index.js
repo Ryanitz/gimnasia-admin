@@ -1,23 +1,12 @@
 import { resolvers } from "./api/graphql";
 import { useState } from "react/cjs/react.development";
 import Players from "../components/players";
+import AddPlayer from "../components/addPlayer";
 
 export default function Home({ players }) {
-  const [playerName, setPlayerName] = useState("");
-  const [playerSurname, setPlayerSurname] = useState("");
   const [activeTab, setActiveTab] = useState("Jugadores");
 
   const tabs = ["Agregar jugador", "Jugadores", "Editar Jugador"];
-
-  const addPlayer = async () => {
-    const response = await resolvers.Mutation.createPlayer({
-      name: playerName,
-      surname: playerSurname,
-    });
-
-    console.log(response);
-    // getStaticProps();
-  };
 
   return (
     <div>
@@ -34,25 +23,7 @@ export default function Home({ players }) {
           </a>
         ))}
       </div>
-      {activeTab === "Agregar jugador" && (
-        <div className="pt-8 ml-4 flex flex-col">
-          <input
-            type="text"
-            placeholder="Nombre"
-            className="input input-bordered w-full max-w-xs mb-4"
-            onChange={(e) => setPlayerName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Apellido"
-            className="input input-bordered w-full max-w-xs"
-            onChange={(e) => setPlayerSurname(e.target.value)}
-          />
-          <button className="btn" onClick={addPlayer}>
-            Agregar Jugador
-          </button>
-        </div>
-      )}
+      {activeTab === "Agregar jugador" && <AddPlayer />}
       {activeTab === "Jugadores" && (
         <div>
           <Players players={players} />

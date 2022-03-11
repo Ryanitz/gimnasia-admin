@@ -22,17 +22,6 @@ export const config = {
   },
 };
 
-const books = [
-  {
-    title: "asd",
-    author: "ASD",
-  },
-  {
-    title: "asd1",
-    author: "ASD1",
-  },
-];
-
 const typeDefs = gql`
   type Player {
     name: String
